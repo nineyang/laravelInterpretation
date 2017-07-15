@@ -21,9 +21,6 @@ class LoadConfiguration
     {
         $items = [];
 
-        // First we will see if we have a cache configuration file. If we do, we'll load
-        // the configuration items from that file so that it is very quick. Otherwise
-        // we will need to spin through every configuration file and load them all.
 //        查看bootstrap/cache/config.php文件是否存在，如果存在，就引入，并设置已经加载
         if (file_exists($cached = $app->getCachedConfigPath())) {
             $items = require $cached;
@@ -31,10 +28,7 @@ class LoadConfiguration
             $loadedFromCache = true;
         }
 
-        // Next we will spin through all of the configuration files in the configuration
-        // directory and load each one into the repository. This will make all of the
-        // options available to the developer for use in various parts of this app.
-//        把Repository的实例放入instances的config中
+//        把Repository的实例放入instances的config中，这里后面会用到
         $app->instance('config', $config = new Repository($items));
 
 //
@@ -43,10 +37,7 @@ class LoadConfiguration
             $this->loadConfigurationFiles($app, $config);
         }
 
-        // Finally, we will set the application's environment based on the configuration
-        // values that were loaded. We will pass a callback which will be used to get
-        // the environment in a web context where an "--env" switch is not present.
-//        这里主要是用来把当前环境设置在$this['env']中
+//       判断$this->items['app']['env']是否设置，如果没有设置就设置成production
         $app->detectEnvironment(function () use ($config) {
             return $config->get('app.env', 'production');
         });
@@ -88,7 +79,7 @@ class LoadConfiguration
     protected function getConfigurationFiles(Application $app)
     {
         $files = [];
-//返回我们之前设置的config的绝对路径
+//返回config的绝对路径
         $configPath = realpath($app->configPath());
 
 //        这里的files，name ， 以及in都使用了链式调用，所以通过Finder::create()->files()->name('*.php')->in($configPath)返回的是一个Finder的实例，但是这个对象实现了IteratorAggregate接口，所以遍历的时候会调用getIterator返回了一个SqlFileInfo对象

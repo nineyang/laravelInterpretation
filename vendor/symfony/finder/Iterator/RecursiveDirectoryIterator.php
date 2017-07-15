@@ -75,8 +75,8 @@ class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator
         if ('' !== $subPathname) {
             $subPathname .= $this->directorySeparator;
         }
+//        一层层的获取config下面的文件
         $subPathname .= $this->getFilename();
-
         return new SplFileInfo($this->rootPath.$this->directorySeparator.$subPathname, $this->subPath, $subPathname);
     }
 

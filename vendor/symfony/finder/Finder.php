@@ -569,7 +569,6 @@ class Finder implements \IteratorAggregate, \Countable
             throw new \LogicException('You must call one of in() or append() methods before iterating over a Finder.');
         }
 //因为此时的长度是1，所以走了这个判断
-
         if (1 === count($this->dirs) && 0 === count($this->iterators)) {
             return $this->searchInDirectory($this->dirs[0]);
         }
