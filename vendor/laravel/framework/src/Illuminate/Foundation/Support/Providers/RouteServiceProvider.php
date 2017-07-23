@@ -24,7 +24,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->setRootControllerNamespace();
 
-//        判断文件目录缓存文件是否存在
+//        判断cache/routes.php文件是否存在
         if ($this->app->routesAreCached()) {
             $this->loadCachedRoutes();
         } else {
@@ -46,7 +46,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function setRootControllerNamespace()
     {
         if (! is_null($this->namespace)) {
-//            调用offsetset 调用$this->app->bind绑定这个接口
+//            调用offsetget 调用$this->app->make绑定这个接口
             $this->app[UrlGenerator::class]->setRootControllerNamespace($this->namespace);
         }
     }

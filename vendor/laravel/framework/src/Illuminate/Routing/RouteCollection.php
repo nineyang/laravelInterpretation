@@ -68,10 +68,11 @@ class RouteCollection implements Countable, IteratorAggregate
 //获取uri
         $domainAndUri = $route->domain().$route->uri();
 
-//        根据他的方法来写入到routes中
+        //        根据他的方法来写入到routes中
         foreach ($route->methods() as $method) {
             $this->routes[$method][$domainAndUri] = $route;
         }
+        dd($this->routes);
 
 //        注入到allRoutes中
         $this->allRoutes[$method.$domainAndUri] = $route;

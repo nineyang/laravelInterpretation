@@ -18,26 +18,17 @@ class RouteAction
      */
     public static function parse($uri, $action)
     {
-        // If no action is passed in right away, we assume the user will make use of
-        // fluent routing. In that case, we set a default closure, to be executed
-        // if the user never explicitly sets an action to handle the given uri.
 //        如果没有对应动作，返回一个LogicException错误
         if (is_null($action)) {
 //            这里会返回一个['uses' => function...]的数组
             return static::missingAction($uri);
         }
 
-        // If the action is already a Closure instance, we will just set that instance
-        // as the "uses" property, because there is nothing else we need to do when
-        // it is available. Otherwise we will need to find it in the action list.
 //        如果是一个回调，拼接一个数组返回
         if (is_callable($action)) {
             return ['uses' => $action];
         }
 
-        // If no "uses" property has been set, we will dig through the array to find a
-        // Closure instance within this list. We will set the first Closure we come
-        // across into the "uses" property that will get fired off by this route.
         elseif (! isset($action['uses'])) {
 //            返回action的第一个回调,如果都不是，返回null
             $action['uses'] = static::findCallable($action);

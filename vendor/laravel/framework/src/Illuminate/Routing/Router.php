@@ -265,9 +265,6 @@ class Router implements RegistrarContract, BindingRegistrar
 //        把内容放入groupStack数组中
         $this->updateGroupStack($attributes);
 
-        // Once we have updated the group stack, we'll load the provided routes and
-        // merge in the group's attributes when the routes are created. After we
-        // have created the routes, we will pop the attributes off the stack.
 //        载入路由列表
         $this->loadRoutes($routes);
 
@@ -359,10 +356,7 @@ class Router implements RegistrarContract, BindingRegistrar
      */
     protected function createRoute($methods, $uri, $action)
     {
-        // If the route is routing to a controller we will parse the route action into
-        // an acceptable array format before registering it and creating this route
-        // instance itself. We need to build the Closure that will call this out.
-//        如果action不属于一个闭包时执行
+//        如果action不属于一个闭包并且action有设置uses且值为一个字符串时执行
         if ($this->actionReferencesController($action)) {
             $action = $this->convertToControllerAction($action);
         }
@@ -371,9 +365,6 @@ class Router implements RegistrarContract, BindingRegistrar
             $methods, $this->prefix($uri), $action
         );
 
-        // If we have groups that need to be merged, we will merge them now after this
-        // route has already been created and is ready to go. After we're done with
-        // the merge we will be ready to return the route back out to the caller.
 //        如果$this->groupStack不为空则执行
         if ($this->hasGroupStack()) {
             $this->mergeGroupAttributesIntoRoute($route);
@@ -467,7 +458,7 @@ class Router implements RegistrarContract, BindingRegistrar
      */
     protected function prefix($uri)
     {
-//        获取最后一个getLastGroupPrefix的prefix的值
+        //        获取最后一个getLastGroupPrefix的prefix的值
         return trim(trim($this->getLastGroupPrefix(), '/').'/'.trim($uri, '/'), '/') ?: '/';
     }
 

@@ -76,7 +76,6 @@ class RouteRegistrar
         }
 
         $this->attributes[array_get($this->aliases, $key, $key)] = $value;
-
         return $this;
     }
 
@@ -130,7 +129,7 @@ class RouteRegistrar
         if (! is_array($action)) {
             $action = array_merge($this->attributes, $action ? ['uses' => $action] : []);
         }
-//       这里又重新执行了Router.php的方法
+        //       这里又重新执行了Router.php的方法
         return $this->router->{$method}($uri, $this->compileAction($action));
     }
 
