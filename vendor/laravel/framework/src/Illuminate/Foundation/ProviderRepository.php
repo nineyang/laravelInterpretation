@@ -55,26 +55,17 @@ class ProviderRepository
 //        返回一个['when' => [...], 'providers'=>[...] , 'eager'=>[...] , 'deferred' => [...] ]数组 , $manifest是已经载入的/bootstrap/cache/services.php中的数组
         $manifest = $this->loadManifest();
 
-        // First we will load the service manifest, which contains information on all
-        // service providers registered with the application and which services it
-        // provides. This is used to know which services are "deferred" loaders.
 //        如果$manifest是null或者说$providers和$manifest['providers']不相同时执行
         if ($this->shouldRecompile($manifest, $providers)) {
 //            重新载入每一个providers，然后重新生成一个manifest
             $manifest = $this->compileManifest($providers);
         }
 
-        // Next, we will register events to load the providers for each of the events
-        // that it has requested. This allows the service provider to defer itself
-        // while still getting automatically loaded when a certain event occurs.
         foreach ($manifest['when'] as $provider => $events) {
 //            如果events数组长度超过2，则把events会注入到Dispathcher中的wildcards或者listeners中
             $this->registerLoadEvents($provider, $events);
         }
 
-        // We will go ahead and register all of the eagerly loaded providers with the
-        // application so their services can be registered with the application as
-        // a provided service. Then we will set the deferred service list on it.
         foreach ($manifest['eager'] as $provider) {
 //            注册每一个服务提供者，这个方法之前也有阐述
             $this->app->register($provider);

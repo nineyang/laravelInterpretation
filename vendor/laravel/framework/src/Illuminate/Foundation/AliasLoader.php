@@ -70,7 +70,7 @@ class AliasLoader
      */
     public function load($alias)
     {
-//        第二次执行的时候，此时的$alias已经是我们上一次$this->aliases中的值所对应的classname
+        //        第二次执行的时候，此时的$alias已经是我们上一次$this->aliases中的值所对应的classname
         if (static::$facadeNamespace && strpos($alias, static::$facadeNamespace) === 0) {
 //            这个方法会用一个模板来做替换，来返回一个类文件
             $this->loadFacade($alias);

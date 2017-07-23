@@ -214,10 +214,9 @@ abstract class Facade
      */
     public static function __callStatic($method, $args)
     {
-//        当继承自Facade的对象中，如果调用了一个不存在的静态方法，那么就会执行这个方法
-
-//        返回一个之前在app中绑定或者注入的对象
+        //        当继承自Facade的对象中，如果调用了一个不存在的静态方法，那么就会执行这个方法
         $instance = static::getFacadeRoot();
+//        返回一个之前在app中绑定或者注入的对象
 
         if (! $instance) {
             throw new RuntimeException('A facade root has not been set.');

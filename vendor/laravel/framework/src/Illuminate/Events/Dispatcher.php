@@ -62,7 +62,7 @@ class Dispatcher implements DispatcherContract
      */
     public function listen($events, $listener)
     {
-//        根据不同的情况把events和listener放入wildcards和listeners中
+        //        根据不同的情况把events和listener放入wildcards和listeners中
         foreach ((array) $events as $event) {
             if (Str::contains($event, '*')) {
                 $this->setupWildcardListen($event, $listener);
