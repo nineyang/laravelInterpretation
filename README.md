@@ -7,5 +7,5 @@ Laravel框架源码解读系列
 # 第二篇-Request
 地址:http://www.hellonine.top/index.php/archives/16/
 
-# 第三篇-Response(未完)
+# 第三篇-Response
 地址:http://www.hellonine.top/index.php/archives/29/
