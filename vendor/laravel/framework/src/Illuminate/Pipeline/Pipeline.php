@@ -95,12 +95,13 @@ class Pipeline implements PipelineContract
      */
     public function then(Closure $destination)
     {
+//        这里需要注意的是，这里的$this->carry()和$this->prepareDestination都是调用的子类的方法，子类是Routing/Pipeline.php
 //        array_reverse将$this->pipes顺序颠倒，
-//        array_reduce如果指定了第三个参数，如果第一个参数，即数组不为空，则作为第一个值，如果为空，则作为返回值
+//        array_reduce 如果制定了第三个参数，那么在第一个参数不为空的情况下，会作为array_reverse第二个参数，也就是我们设置的回调函数的第一次执行时的第一个参数，如果为空的情况下，那么就会作为这个函数的返回值返回
         $pipeline = array_reduce(
             array_reverse($this->pipes), $this->carry(), $this->prepareDestination($destination)
         );
-
+//   $pipeline实际上获取的是一个$this->carry()返回的第二层的回调函数，下面才正式执行
         return $pipeline($this->passable);
     }
 
@@ -124,29 +125,20 @@ class Pipeline implements PipelineContract
      */
     protected function carry()
     {
-//        这里分成两层，第一层的return function是一个闭包，会通过array_reduce立即执行，而第二层的实际上没有立即执行，而是在后面调用的时候才执行的
+//        这里最终会被他的子类来调用执行回调
         return function ($stack, $pipe) {
 
             return function ($passable) use ($stack, $pipe) {
                 if ($pipe instanceof Closure) {
-                    // If the pipe is an instance of a Closure, we will just call it directly but
-                    // otherwise we'll resolve the pipes out of the container and call it with
-                    // the appropriate method and arguments, returning the results back out.
                     return $pipe($passable, $stack);
                 } elseif (! is_object($pipe)) {
 //                    因为我们传入的都是类名，所以走的是这个条件判断
                     list($name, $parameters) = $this->parsePipeString($pipe);
-                    // If the pipe is a string we will parse the string and resolve the class out
-                    // of the dependency injection container. We can then build a callable and
-                    // execute the pipe function giving in the parameters that are required.
 //                    通过make，获取一个实例
                     $pipe = $this->getContainer()->make($name);
 //这里后面会传入一个request对象，作为参数合并
                     $parameters = array_merge([$passable, $stack], $parameters);
                 } else {
-                    // If the pipe is already an object we'll just make a callable and pass it to
-                    // the pipe as-is. There is no need to do any extra parsing and formatting
-                    // since the object we're given was already a fully instantiated object.
                     $parameters = [$passable, $stack];
                 }
 //                调用生成的实例的handle方法

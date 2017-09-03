@@ -179,6 +179,7 @@ class Kernel implements KernelContract
     protected function dispatchToRouter()
     {
         return function ($request) {
+//            把requirt注册到$this->app->instances中
             $this->app->instance('request', $request);
 
             return $this->router->dispatch($request);

@@ -43,13 +43,16 @@ class Pipeline extends BasePipeline
      */
     protected function carry()
     {
+//        返回一个回调,而这里的回调会通过array_reduce来执行，所以其实返回的是这个回调里面的函数
+//        $stack要注意的是，这里的$stack是上一次注入的回调，也就是本方法，来帮助后面的handle
         return function ($stack, $pipe) {
             return function ($passable) use ($stack, $pipe) {
                 try {
+//                    调用父类返回一个回调
                     $slice = parent::carry();
-
+//                      执行这个回调再返回一个回调里面的回调函数
                     $callable = $slice($stack, $pipe);
-
+//                      执行刚刚返回的第二层回调
                     return $callable($passable);
                 } catch (Exception $e) {
                     return $this->handleException($passable, $e);
