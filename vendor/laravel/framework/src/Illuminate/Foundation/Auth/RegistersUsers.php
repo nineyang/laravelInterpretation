@@ -32,6 +32,7 @@ trait RegistersUsers
 
         event(new Registered($user = $this->create($request->all())));
 
+//        默认情况下,$this->guard()会返回一个`SessionGuard`的对象
         $this->guard()->login($user);
 
         return $this->registered($request, $user)
