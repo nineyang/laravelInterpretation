@@ -63,6 +63,7 @@ class InputDefinition
         }
 
         $this->setArguments($arguments);
+//        这里是会把指令和其缩写分别放到option 和 shortcuts数组中
         $this->setOptions($options);
     }
 

@@ -26,7 +26,7 @@ $app = require_once __DIR__.'/bootstrap/app.php';
 | or another output device for the developers. Here goes nothing!
 |
 */
-
+//因为前面在app.php中设置了kernel，所以结合我们前面讲的，当我们使用make的时候，会返回一个`console\kernel.php`的实例
 $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 
 $status = $kernel->handle(

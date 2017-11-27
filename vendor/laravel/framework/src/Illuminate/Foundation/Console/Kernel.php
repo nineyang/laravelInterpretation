@@ -118,7 +118,7 @@ class Kernel implements KernelContract
 
                 $this->commandsLoaded = true;
             }
-
+//            通过单例来获取artisan的实例
             return $this->getArtisan()->run($input, $output);
         } catch (Exception $e) {
             $this->reportException($e);
@@ -281,6 +281,7 @@ class Kernel implements KernelContract
     protected function getArtisan()
     {
         if (is_null($this->artisan)) {
+//
             return $this->artisan = (new Artisan($this->app, $this->events, $this->app->version()))
                                 ->resolveCommands($this->commands);
         }

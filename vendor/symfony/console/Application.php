@@ -81,7 +81,9 @@ class Application
         $this->version = $version;
         $this->terminal = new Terminal();
         $this->defaultCommand = 'list';
+//        生成一个HelperSet对象，并且会把几个需要的对象注入到helperSet对象中
         $this->helperSet = $this->getDefaultHelperSet();
+// 生成一些默认的参数，比如--help之类的
         $this->definition = $this->getDefaultInputDefinition();
 
         foreach ($this->getDefaultCommands() as $command) {
