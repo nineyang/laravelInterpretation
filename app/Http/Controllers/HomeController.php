@@ -23,6 +23,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+        Cache::put('hello' , 'world' , 600);
         return view('home');
     }
 }
